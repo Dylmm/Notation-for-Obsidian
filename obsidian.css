@@ -1,17 +1,18 @@
 /***** TABLE OF CONTENTS *****/
+/* 0. Hidden Directory Folders (add or rename folders to be hidden from switcher!)
 /* 1. Font
 /* 2. Colours
-/*     2.1. Hue options (change these numbers for an entirely new look!)
-/*     2.2. Dark theme
-/*     2.3. Light theme
+/*     2.1. Hue Options (change these numbers for an entirely new look!)
+/*     2.2. Dark Theme
+/*     2.3. Light Theme
 /*     2.4. Common (calculated)
 /* 3. General UI
 /*     3.1. Title Bar
 /* 4. Markdown (editor / preview)
 /*     4.1. Headings
-/*         4.1.1. Fix font weights
+/*         4.1.1. Fix Font Weights
 /*     4.2. Links
-/*         4.2.1. Nifty arrow before internal links (also applies to embeds)
+/*         4.2.1. Nifty Arrow Before Internal Links (also applies to embeds)
 /*     4.3. Embeds
 /*     4.4. Tables
 /*     4.5. Popovers
@@ -29,6 +30,12 @@
 /* 8. Tags
 /*     8.1. Tag custom colours
 /***** *****/
+
+/* 0. Hidden Folders */
+div[data-path*="/_templates"],
+div[data-path^="_templates"] {
+    display: none !important;
+}
 
 /* 1. Font */
 body {
@@ -49,6 +56,7 @@ body.theme-dark {
   --code: #EB5757;
 
   --opacity-translucency: 0.7;
+  --iframe-scaling-aspect-ratio: 16/9;
 }
 
 /* 2.2. Dark theme */
@@ -147,6 +155,7 @@ body.theme-light {
 /* 3. General UI */
 .view-header-title {
   font-weight: 700;
+  min-width:7ch;
 }
 
 /* 3.1. Title bar */
@@ -311,6 +320,27 @@ strong,
 .markdown-embed-link svg {
   display: none;
   /* hide the svg link icon, gets replaced with a nifty arrow */
+}
+
+/* Change the look for iframes containing "youtube" and "wiki" in the url, doesn't modify the graph view iframe */
+iframe[src*="youtube"] {
+        display: block;
+        border: none;
+        border-radius: calc(1vw + 1vh); /* Round the corners */
+        box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.5); /* Add subtle shadow */
+        width: calc(100% - 20px);
+        max-height: 80vh;
+        aspect-ratio:  var(--iframe-scaling-aspect-ratio);
+}
+
+iframe[src*="wiki"] {
+        display: block;
+        border: none;
+        border-radius: calc(1vw + 1vh); /* Round the corners */
+        box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.5); /* Add subtle shadow */
+        width: calc(100% - 20px);
+        max-height: 80vh;
+        aspect-ratio: var(--iframe-scaling-aspect-ratio);
 }
 
 /* 4.4. Tables */
@@ -662,16 +692,34 @@ ol>li {
 /* This is where the magic happens */
 .workspace-leaf-content[data-type=markdown] .view-header,
 .workspace-leaf.mod-active .workspace-leaf-content[data-type=markdown] .view-header {
-  max-width: 700px;
+  max-width: calc(100% - 20px);
   margin-left: auto;
   margin-right: auto;
   padding: 0;
   border: none;
   background-color: transparent;
   height: auto;
-  padding-top: 108px;
+  padding-top: 15px;
 }
 
+.view-header-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.view-header-left {
+  flex: 1;
+  margin-right: auto;
+}
+
+.view-actions {
+  flex: 0;
+  margin-left: auto;
+}
+  
 .workspace-split.mod-root .workspace-leaf {
   background-color: var(--background-primary);
 }
@@ -696,16 +744,58 @@ ol>li {
   margin-top: auto;
   height: auto;
   padding: 0;
+  padding-right:2ch;
+  padding-left:2ch;
+}
+
+@media (max-width: 600px) {
+  .view-header-title-container {
+    min-width: 75px;
+    flex-direction: row;
+    align-items: flex-start; 
+  }
+  
+  .view-header-left, .view-actions {
+    width: 100%;
+    margin: 0 0 10px 0;
+  }
+
+  .view-actions {
+    margin-left: 0;
+  }
+
+  .workspace-leaf-content[data-type=markdown] .view-header-title-container:after {
+  content: " ";
+  }
+}
+
+.view-header-title-parent {
+  max-width: calc(100% - 20px);
+  min-width:  15ch;
+  white-space: normal;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+
+.view-header-breadcrumbs {
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.view-header-breadcrumb-separator {
+  flex-shrink: 0;
 }
 
 .workspace-leaf-content[data-type=markdown] .view-header-title-container:after {
-  content: none;
+  padding-right: 0px
 }
 
 .workspace-leaf-content[data-type=markdown] .view-header-title {
   font-size: 40px;
   line-height: 1.2em;
-  padding: 3px 2px;
+  padding: 0px 2px;
   height: auto;
   margin: 0;
   color: var(--text-normal);
@@ -713,7 +803,6 @@ ol>li {
 }
 
 .workspace-leaf-content[data-type=markdown] .view-actions {
-  position: absolute;
   top: 0;
   right: 0;
   left: 0;
