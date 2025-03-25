@@ -323,6 +323,7 @@ strong,
 }
 
 /* Change the look for iframes containing "youtube" and "wiki" in the url, doesn't modify the graph view iframe */
+iframe[src*="wiki"],
 iframe[src*="youtube"] {
         display: block;
         border: none;
@@ -331,16 +332,6 @@ iframe[src*="youtube"] {
         width: calc(100% - 20px);
         max-height: 80vh;
         aspect-ratio:  var(--iframe-scaling-aspect-ratio);
-}
-
-iframe[src*="wiki"] {
-        display: block;
-        border: none;
-        border-radius: calc(1vw + 1vh); /* Round the corners */
-        box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.5); /* Add subtle shadow */
-        width: calc(100% - 20px);
-        max-height: 80vh;
-        aspect-ratio: var(--iframe-scaling-aspect-ratio);
 }
 
 /* 4.4. Tables */
